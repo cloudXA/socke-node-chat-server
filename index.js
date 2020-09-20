@@ -19,8 +19,6 @@ io.on('connect', (socket) => {
 
   // 当用户进入房间(输入name、room)，后端监听到join事件后，将信息存储，同时利用callback执行前端动作
   socket.on('join', ({ name, room }, callback) => {
-    console.log('join 事件被触发 server')
-    console.log(name, room); 
 
     // 依据socket.id 添加用户信息
     const { error, user } = addUser({ id: socket.id, name, room });
@@ -43,6 +41,7 @@ io.on('connect', (socket) => {
   // 监听sendMessage事件，通过socket.id获取用户信息。服务器触发message事件给前端
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
+    console.log(user, 'user')
 
     io.to(user.room).emit('message', { user: user.name, text: message });
 
